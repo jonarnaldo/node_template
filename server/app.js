@@ -1,4 +1,4 @@
-const bodyParser = require('bodyParser');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorHandler = require('errorHandler');
 const session = require('express-session');
@@ -9,14 +9,14 @@ const routes = require('./routes');
 const app = express();
 
 
-app.use(bodyParser);
-app.use(cors);
-app.use(errorHandler);
-app.use(session);
-app.use(mongoose);
-app.use(path);
-app.use(express);
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(errorHandler());
+// app.use(session);
 
+// add routes
 app.use(routes);
 
 app.listen(8000, () => {
