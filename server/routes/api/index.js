@@ -1,8 +1,11 @@
 const router = require('express').Router();
 
-router.post('/endpoint', (req, res, next) => {
+router.get('/endpoint', (req, res, next) => {
   console.log("some endpoint -->");
-  res.json({ key: 'value'})
+
+  setTimeout(() => {
+    res.json({ items: ['test']})
+  }, 2000 )
 })
 
 // test
