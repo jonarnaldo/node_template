@@ -1,74 +1,22 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import axios from 'axios';
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
-
-class About extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      items: []
-    }
-
-  }
-
-  componentDidMount() {
-    axios('http://localhost:8000/api/endpoint').then((res) => {
-      console.log('axios --->', res)
-
-      if (res.status === 200) {
-        this.setState(res.data)
-      }
-    })
-  }
-
-  loadData = (data) => {
-    this.setState({ items: data.items })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-
-    if (this.state.items.length < 1) {
-      console.log('new items', this.state.items, nextState.items)
-      return true;
-    }
-
-    return false
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-  }
-
-  render () {
-    return (
-      <div>
-        <h2>About !!!</h2>
-        {this.state.items.length > 0 ? this.state.items.map((item) => {
-          return <div key={item}>{item}</div>
-        }) : <div>loading...</div>}
-      </div>
-    );
-  }
-}
+import React from 'react';
+import { Provider, connect} from 'react-redux';
+import store from './store';
+import Home from './components/home';
+import About from './components/about';
 
 ReactDOM.render(
   <Router>
-    <div>
-      <Link to="/about">About</Link>
-      <Link to="/">Back</Link>
-      <Switch>
-        <Route exact path="/" component={About}/>
-      </Switch>
-    </div>
+    <Provider store={store}>
+      <div>
+        <Link to="/about">About</Link>
+        <Link to="/">Back</Link>
+        <Switch>
+          <Route exact path="/" component={About}/>
+        </Switch>
+      </div>
+    </Provider>
   </Router>,
   document.getElementById('app')
 );
